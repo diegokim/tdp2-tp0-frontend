@@ -37,4 +37,8 @@ public class CitiesAdapter  extends RecyclerView.Adapter<CitiesViewHolder> {
     public int getItemCount() {
         return list.size();
     }
+
+//    @Override
+//    public void onViewRecycled(CitiesViewHolder holder) {
+//    }
 }

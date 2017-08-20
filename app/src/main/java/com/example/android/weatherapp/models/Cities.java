@@ -7,8 +7,10 @@ public class Cities {
     public static ArrayList<String> getCities() {
         // TODO: Add real logic
         ArrayList<String> arr = new ArrayList<>();
-        arr.add("Buenos Aires, AR");
-        arr.add("Rosario, AR");
+        for ( int i =0 ; i < 100 ; i++){
+            arr.add("Rosario, AR");
+            arr.add("Buenos Aires, AR");
+        }
         return arr;
     }
 }

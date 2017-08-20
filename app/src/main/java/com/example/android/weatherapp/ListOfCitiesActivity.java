@@ -1,15 +1,12 @@
 package com.example.android.weatherapp;
 
-import android.app.Activity;
-import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+
 
 import com.example.android.weatherapp.cities.CitiesAdapter;
 import com.example.android.weatherapp.models.Cities;
@@ -32,5 +29,9 @@ public class ListOfCitiesActivity extends AppCompatActivity {
         recyclerView.setAdapter(new CitiesAdapter(listOfCities, this));
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(70);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
     }
 }

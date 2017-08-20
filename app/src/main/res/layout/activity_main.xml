@@ -8,6 +8,7 @@
 
     <include layout="@layout/app_bar"/>
     <TextView
+        android:id="@+id/body_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"

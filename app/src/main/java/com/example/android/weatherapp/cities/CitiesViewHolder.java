@@ -32,8 +32,5 @@ public class CitiesViewHolder extends RecyclerView.ViewHolder implements View.On
         data.putExtra("CITY_NAME",cityName.getText());
         activity.setResult(RESULT_OK, data);
         activity.finish();
-
-
-
     }
 }
