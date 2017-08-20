@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="default_city"> Nueva York</string>
 </resources>
