@@ -22,8 +22,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private static final int PICK_CITY = 1 ;
     private static final String CITY_NAME = "CITY_NAME" ;
-    private TextView currentCity;
-    private TextView bodyText;
+    private static final String TEMPERATURE_UNIT = " °C";
+    private static final String HUMIDITY_UNIT = " Hpa";
+    private TextView currentName;
+    private TextView temperature;
+    private TextView humidity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +38,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
 
         // Set the text of the toolbar to be the current city
-        // TODO: get the city from local storage
-        currentCity = (TextView) findViewById(R.id.current_city);
-        currentCity.setText(R.string.default_city);
 
-        bodyText = (TextView) findViewById(R.id.body_text);
+        currentName = (TextView) findViewById(R.id.current_city);
+        temperature = (TextView) findViewById(R.id.temperature);
+        humidity = (TextView) findViewById(R.id.humidity);
 
         CurrentCity.getInstance().addObserver(this);
-
-        WeatherRequest weatherRequest = new WeatherRequest(null);
+        // TODO: get the city from local storage
+        WeatherRequest weatherRequest = new WeatherRequest("2");
         WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
     }
 
@@ -59,14 +61,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
             if (resultCode == RESULT_OK) {
                 //TODO: Ask for the weather and update
                 String name = data.getStringExtra(CITY_NAME);
-                currentCity.setText(name);
+                CurrentCity.getInstance().setName(name);
+                // TODO: Request
             }
         }
     }
 
-
     @Override
     public void update(Observable observable, Object o) {
-        bodyText.setText(CurrentCity.getInstance().getName());
+        // Update the view when the currenct city change some of its atributes.
+        String name = CurrentCity.getInstance().getName();
+        String humidity = CurrentCity.getInstance().getHumidity();
+        String temperature = CurrentCity.getInstance().getTemperature();
+
+        // Update the TextViews
+        currentName.setText(name);
+        this.temperature.setText(temperature + TEMPERATURE_UNIT);
+        this.humidity.setText(humidity + HUMIDITY_UNIT);
     }
 }

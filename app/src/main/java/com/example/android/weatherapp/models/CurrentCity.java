@@ -9,7 +9,7 @@ public class CurrentCity extends Observable {
     private City mCity;
 
     private CurrentCity (){
-        mCity = new City("Nueva York", "S/D", "S/D");
+        mCity = new City("Nueva York");
     }
 
     public static CurrentCity getInstance() {
@@ -50,5 +50,13 @@ public class CurrentCity extends Observable {
     }
     public String getTemperature () {
         return mCity.temperature;
+    }
+
+    public void setWeather(String weather) {
+        if (!weather.equals(mCity.weather) ) {
+            mCity.weather = weather;
+            setChanged();
+            notifyObservers();
+        }
     }
 }

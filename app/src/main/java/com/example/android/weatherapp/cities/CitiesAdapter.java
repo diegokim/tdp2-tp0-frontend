@@ -6,16 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.android.weatherapp.R;
+import com.example.android.weatherapp.models.City;
 
 import java.util.List;
 
 
 public class CitiesAdapter  extends RecyclerView.Adapter<CitiesViewHolder> {
 
-    private List<String> list;
+    private List<City> list;
     private Activity activity;
 
-    public CitiesAdapter(List<String> list, Activity activity) {
+    public CitiesAdapter(List<City> list, Activity activity) {
         this.list = list;
         this.activity = activity;
     }
@@ -29,8 +30,9 @@ public class CitiesAdapter  extends RecyclerView.Adapter<CitiesViewHolder> {
 
     @Override // Setear los datos
     public void onBindViewHolder(CitiesViewHolder holder, int position) {
-        String name = list.get(position);
+        String name = list.get(position).name;
         holder.cityName.setText(name);
+        holder.setIsRecyclable(false);
     }
 
     @Override // Obtener la cantidad de elementos
