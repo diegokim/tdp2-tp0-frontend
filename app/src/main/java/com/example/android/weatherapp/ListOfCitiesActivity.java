@@ -1,10 +1,15 @@
 package com.example.android.weatherapp;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 
@@ -16,7 +21,7 @@ import java.util.ArrayList;
 
 
 // Activity that displays the cities when we want to search
-public class ListOfCitiesActivity extends AppCompatActivity {
+public class ListOfCitiesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -34,6 +39,9 @@ public class ListOfCitiesActivity extends AppCompatActivity {
         recyclerView.setAdapter(citiesAdapter);
         layoutManager = new LinearLayoutManager(this);
 
+        // Set a custom toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
+        setSupportActionBar(toolbar);
 
         // Trying to optimize
         layoutManager.setItemPrefetchEnabled(true);
@@ -43,6 +51,28 @@ public class ListOfCitiesActivity extends AppCompatActivity {
         recyclerView.setItemViewCacheSize(100);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        // Here is where we are going to implement the filter logic
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
 
 }
