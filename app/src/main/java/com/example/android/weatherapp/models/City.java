@@ -1,26 +1,34 @@
 package com.example.android.weatherapp.models;
 
-/**
- * Created by diegokim on 8/19/17.
- */
+import android.support.annotation.NonNull;
 
-public class City {
-    public String name;
-    public String temperature;
-    public String humidity;
-    public String weather;
+import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 
-    public City(String name, String humidity, String temperature, String weather) {
+
+public class City implements SortedListAdapter.ViewModel{
+    private final String name;
+    private final int id;
+
+    public City(String name, int id) {
         this.name = name;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.weather = weather;
+        this.id = id;
     }
 
-    public City(String name) {
-        this.name = name;
-        this.temperature = "S/D";
-        this.humidity= "S/D";
-        this.weather = "S/D";
+    @Override
+    public <T> boolean isSameModelAs(@NonNull T t) {
+        return this.equals(t);
+    }
+
+    @Override
+    public <T> boolean isContentTheSameAs(@NonNull T t) {
+        return this.id == ((City) t).id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
     }
 }

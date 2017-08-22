@@ -26,9 +26,9 @@ public class Cities {
         if (cities == null) {
             // TODO: Add real logic
             cities = new ArrayList<>();
-            for (int i = 0 ; i < 70000 ; i++ ) {
-                String city = new String("Ciudad " + i);
-                cities.add(new City(city));
+            for (int i = 0 ; i < 100 ; i++ ) {
+                String city = new String("Ciudad " + Integer.toString(i));
+                cities.add(new City(city,i));
             }
         }
 
