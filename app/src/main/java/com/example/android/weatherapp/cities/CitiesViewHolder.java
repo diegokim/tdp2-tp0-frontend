@@ -19,7 +19,6 @@ public class CitiesViewHolder extends SortedListAdapter.ViewHolder<City> {
 
     @Override
     protected void performBind(@NonNull City city) {
-        Log.d("INFO", city.getName());
         mBinding.setModel(city);
     }
 }

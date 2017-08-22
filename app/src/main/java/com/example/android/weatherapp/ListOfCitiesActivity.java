@@ -6,15 +6,13 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
-import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,18 +24,23 @@ import com.example.android.weatherapp.cities.CitiesAdapter;
 import com.example.android.weatherapp.databinding.ActivityListOfCitiesBinding;
 import com.example.android.weatherapp.models.Cities;
 import com.example.android.weatherapp.models.City;
+import com.example.android.weatherapp.request.WeatherRequestQueue;
+import com.example.android.weatherapp.request.cities.CitiesRequest;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.example.android.weatherapp.FirstLetterSelectionActivity.LETTER_EXTRA;
-import static com.example.android.weatherapp.models.Cities.getCities;
 
 
 // Activity that displays the cities when we want to search
-public class ListOfCitiesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SortedListAdapter.Callback {
+public class ListOfCitiesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SortedListAdapter.Callback, Observer {
 
     public static int PICK_CITY = 1;
     public static String CITY_NAME_EXTRA = "CITY NAME";
@@ -45,8 +48,6 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
     private CitiesAdapter mAdapter;
     private ActivityListOfCitiesBinding mBinding;
     private Animator mAnimator;
-
-    private List<City> mModels;
 
 
     private static final Comparator<City> ALPHABETICAL_COMPARATOR = new Comparator<City>() {
@@ -86,10 +87,22 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
 
         Log.i("LETTER", letter);
 
-        mModels = Cities.getCities();
-        mAdapter.edit()
-                .replaceAll(mModels)
-                .commit();
+        // This observable changes when the request gets the response
+        Cities.getInstance().addObserver(this);
+
+        try {
+            // Send request to the server asking for the cities
+            JSONObject params = new JSONObject();
+            params.put("keyWord",letter.toLowerCase());
+            CitiesRequest citiesRequest = new CitiesRequest(params);
+            WeatherRequestQueue.getInstance(this).addToRequestQueue(citiesRequest);
+
+            mAdapter.edit()
+                    .replaceAll(Cities.getInstance().getCities())
+                    .commit();
+        } catch (Exception e) {
+
+        }
     }
 
 
@@ -106,7 +119,7 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<City> filteredModelList = filter(mModels, query);
+        final List<City> filteredModelList = filter(Cities.getInstance().getCities(), query);
         mAdapter.edit()
                 .replaceAll(filteredModelList)
                 .commit();
@@ -180,5 +193,12 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
             }
         });
         mAnimator.start();
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        mAdapter.edit()
+                .replaceAll(Cities.getInstance().getCities())
+                .commit();
     }
 }

@@ -16,23 +16,40 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Observable;
 
 
-public class Cities {
+public class Cities extends Observable {
 
-    public static ArrayList<City> cities;
+    private static Cities instance;
 
-    public static ArrayList<City> getCities() {
-        if (cities == null) {
-            // TODO: Add real logic
-            cities = new ArrayList<>();
-            for (int i = 0 ; i < 100 ; i++ ) {
-                String city = new String("Ciudad " + Integer.toString(i));
-                cities.add(new City(city,i));
-            }
+    private ArrayList<City> cities;
+
+    private Cities () {
+        cities = new ArrayList<>();
+    }
+
+    public static Cities getInstance() {
+        if (instance == null) {
+            instance = new Cities();
         }
+        return instance;
+    }
 
+    public List<City> getCities() {
         return cities;
     }
+
+
+    public void setCities(ArrayList<City> newCities) {
+        if (newCities != null) {
+            cities = newCities;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+
 
 }
