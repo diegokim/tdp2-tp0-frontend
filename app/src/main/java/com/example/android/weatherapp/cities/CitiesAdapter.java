@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class CitiesAdapter  extends SortedListAdapter<City> {
     @Override
     protected ViewHolder<? extends City> onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent, int i) {
         final ItemCityBinding binding = ItemCityBinding.inflate(inflater, parent, false);
+        Log.i("INFO", Integer.toString(i));
         return new CitiesViewHolder(binding, mListener);
     }
 }

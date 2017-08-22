@@ -3,6 +3,8 @@ package com.example.android.weatherapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
@@ -13,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,11 +32,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.example.android.weatherapp.FirstLetterSelectionActivity.LETTER_EXTRA;
 import static com.example.android.weatherapp.models.Cities.getCities;
 
 
 // Activity that displays the cities when we want to search
 public class ListOfCitiesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SortedListAdapter.Callback {
+
+    public static int PICK_CITY = 1;
+    public static String CITY_NAME_EXTRA = "CITY NAME";
 
     private CitiesAdapter mAdapter;
     private ActivityListOfCitiesBinding mBinding;
@@ -52,6 +59,8 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Activity activity = this;
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_list_of_cities);
 
         setSupportActionBar(mBinding.searchToolbar);
@@ -60,6 +69,10 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
             @Override
             public void onExampleModelClicked(City model) {
             //TODO: On Click Logic
+                Intent data = new Intent();
+                data.putExtra(CITY_NAME_EXTRA,model.getName());
+                activity.setResult(RESULT_OK, data);
+                activity.finish();
             }
         });
 
@@ -67,6 +80,11 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
 
         mBinding.listOfCities.setLayoutManager(new LinearLayoutManager(this));
         mBinding.listOfCities.setAdapter(mAdapter);
+
+        Intent intent = getIntent();
+        String letter = intent.getStringExtra(LETTER_EXTRA);
+
+        Log.i("LETTER", letter);
 
         mModels = Cities.getCities();
         mAdapter.edit()

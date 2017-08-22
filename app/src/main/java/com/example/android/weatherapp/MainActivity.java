@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.weatherapp.models.CurrentCity;
-import com.example.android.weatherapp.request.WeatherRequest;
+import com.example.android.weatherapp.request.weather.WeatherRequest;
 import com.example.android.weatherapp.request.WeatherRequestQueue;
 
 
@@ -20,8 +20,6 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    private static final int PICK_CITY = 1 ;
-    private static final String CITY_NAME = "CITY_NAME" ;
     private static final String TEMPERATURE_UNIT = " °C";
     private static final String HUMIDITY_UNIT = " Hpa";
     private TextView currentName;
@@ -50,17 +48,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void selectCity(View view) {
-        Intent intent = new Intent(this, ListOfCitiesActivity.class);
-        startActivityForResult(intent, PICK_CITY);
+        Intent intent = new Intent(this, FirstLetterSelectionActivity.class);
+        startActivityForResult(intent, ListOfCitiesActivity.PICK_CITY);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == PICK_CITY) {
+        if (requestCode == ListOfCitiesActivity.PICK_CITY) {
             if (resultCode == RESULT_OK) {
                 //TODO: Ask for the weather and update
-                String name = data.getStringExtra(CITY_NAME);
+                String name = data.getStringExtra(ListOfCitiesActivity.CITY_NAME_EXTRA);
                 CurrentCity.getInstance().setName(name);
                 // TODO: Request
             }

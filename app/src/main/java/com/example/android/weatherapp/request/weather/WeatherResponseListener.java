@@ -1,4 +1,4 @@
-package com.example.android.weatherapp.request;
+package com.example.android.weatherapp.request.weather;
 
 import com.android.volley.Response;
 import com.example.android.weatherapp.models.CurrentCity;

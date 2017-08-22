@@ -1,4 +1,4 @@
-package com.example.android.weatherapp.request;
+package com.example.android.weatherapp.request.weather;
 
 import android.util.Log;
 
