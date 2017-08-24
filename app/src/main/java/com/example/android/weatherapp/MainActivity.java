@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.weatherapp.models.CurrentCity;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private TextView currentName;
     private TextView temperature;
     private TextView humidity;
+    private ProgressBar spinner;
     //TODO: Default api call?
     private static final String DEFAULT_ID = "5128638";
 
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        spinner = (ProgressBar) findViewById(R.id.main_progress_bar);
 
         // Set a custom toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         CurrentCity.getInstance().addObserver(this);
         // TODO: get the city from local storage
+        activateSpinner();
         WeatherRequest weatherRequest = new WeatherRequest(DEFAULT_ID);
         WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
     }
@@ -69,10 +74,23 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                 CurrentCity.getInstance().setName(name);
                 CurrentCity.getInstance().setCountry(country);
+                activateSpinner();
                 WeatherRequest weatherRequest = new WeatherRequest(Integer.toString(id));
                 WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
             }
         }
+    }
+
+    protected void activateSpinner() {
+        temperature.setVisibility(View.GONE);
+        humidity.setVisibility(View.GONE);
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    protected void deactivateSpinner() {
+        spinner.setVisibility(View.GONE);
+        temperature.setVisibility(View.VISIBLE);
+        humidity.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -88,5 +106,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentName.setText(name + CITY_NAME_COUNTRY_SEPARATOR + country);
         this.temperature.setText(temperature + TEMPERATURE_UNIT);
         this.humidity.setText(humidity + HUMIDITY_UNIT);
+        deactivateSpinner();
     }
 }

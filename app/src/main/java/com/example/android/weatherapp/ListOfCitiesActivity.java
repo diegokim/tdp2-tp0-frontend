@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ProgressBar;
 
 
 import com.example.android.weatherapp.cities.CitiesAdapter;
@@ -84,10 +85,9 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
         });
 
         mAdapter.addCallback(this);
-
         mBinding.listOfCities.setLayoutManager(new LinearLayoutManager(this));
         mBinding.listOfCities.setAdapter(mAdapter);
-
+        mBinding.editProgressBar.setVisibility(View.VISIBLE);
         Intent intent = getIntent();
         String letter = intent.getStringExtra(LETTER_EXTRA);
 
@@ -139,7 +139,6 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
 
     private static List<City> filter(List<City> models, String query) {
         final String lowerCaseQuery = query.toLowerCase();
-
         final List<City> filteredModelList = new ArrayList<>();
         for (City model : models) {
             final String text = model.getName().toLowerCase();
@@ -206,5 +205,12 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
         mAdapter.edit()
                 .replaceAll(Cities.getInstance().getCities())
                 .commit();
+        mBinding.editProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Cities.getInstance().setCities(null);
+        super.onBackPressed();
     }
 }
