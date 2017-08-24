@@ -4,7 +4,7 @@ import com.android.volley.Request;
 
 
 public class RequestConfig {
-    public static String URL = "http://192.168.0.4:8080";
+    public static String URL = "http://10.1.182.168:8080";
     public static String WEATHER_ENDPOINT = "/cities/";
     public static String CITIES_ENDPOINT = "/cities";
     public static int WEATHER_METHOD = Request.Method.GET;

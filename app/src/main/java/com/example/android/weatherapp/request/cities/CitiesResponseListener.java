@@ -19,13 +19,12 @@ public class CitiesResponseListener implements Response.Listener<JSONObject> {
             JSONArray array = response.getJSONArray("cities");
             for (int i = 0; i < array.length() ; i++) {
                 JSONObject current = array.getJSONObject(i);
-                City currentCity = new City(current.getString("name"),current.getInt("id"));
+                City currentCity = new City(current.getString("name"),current.getInt("id"), current.getString("country"));
                 cities.add(currentCity);
             }
             Cities.getInstance().setCities(cities);
         } catch (Exception e) {
 
         }
-
     }
 }

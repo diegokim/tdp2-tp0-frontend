@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,9 +23,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private static final String TEMPERATURE_UNIT = " °C";
     private static final String HUMIDITY_UNIT = " Hpa";
+    private static final String CITY_NAME_COUNTRY_SEPARATOR = ", ";
     private TextView currentName;
     private TextView temperature;
     private TextView humidity;
+    //TODO: Default api call?
+    private static final String DEFAULT_ID = "5128638";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         CurrentCity.getInstance().addObserver(this);
         // TODO: get the city from local storage
-        WeatherRequest weatherRequest = new WeatherRequest("2");
+        WeatherRequest weatherRequest = new WeatherRequest(DEFAULT_ID);
         WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
     }
 
@@ -59,8 +63,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
             if (resultCode == RESULT_OK) {
                 //TODO: Ask for the weather and update
                 String name = data.getStringExtra(ListOfCitiesActivity.CITY_NAME_EXTRA);
+                int id = data.getIntExtra(ListOfCitiesActivity.CITY_ID_EXTRA, -1);
+                String country = data.getStringExtra(ListOfCitiesActivity.CITY_COUNTRY_EXTRA);
+                Log.i("INFO ID OF CITY", Integer.toString(id));
+
                 CurrentCity.getInstance().setName(name);
-                // TODO: Request
+                CurrentCity.getInstance().setCountry(country);
+                WeatherRequest weatherRequest = new WeatherRequest(Integer.toString(id));
+                WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
             }
         }
     }
@@ -69,11 +79,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update(Observable observable, Object o) {
         // Update the view when the currenct city change some of its atributes.
         String name = CurrentCity.getInstance().getName();
+        String country = CurrentCity.getInstance().getCountry();
         String humidity = CurrentCity.getInstance().getHumidity();
         String temperature = CurrentCity.getInstance().getTemperature();
+        String weather = CurrentCity.getInstance().getWeather();
 
         // Update the TextViews
-        currentName.setText(name);
+        currentName.setText(name + CITY_NAME_COUNTRY_SEPARATOR + country);
         this.temperature.setText(temperature + TEMPERATURE_UNIT);
         this.humidity.setText(humidity + HUMIDITY_UNIT);
     }

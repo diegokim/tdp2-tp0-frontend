@@ -10,9 +10,11 @@ public class CurrentCity extends Observable {
     private String humidity;
     private String temperature;
     private String weather;
+    private String country;
 
     private CurrentCity (){
         this.name = "Nueva York";
+        this.country = "US";
         this.humidity = "S/D";
         this.temperature = "S/D";
         this.weather = "S/D";
@@ -28,23 +30,19 @@ public class CurrentCity extends Observable {
     public void setName (String newName) {
         if (!newName.equals(name)) {
             name = newName;
-            setChanged();
-            notifyObservers();
+            commitChanges();
         }
     }
     public void setTemperature (String newTemperature) {
         if (!newTemperature.equals(temperature)) {
             temperature = newTemperature;
-            setChanged();
-            notifyObservers();
+            commitChanges();
         }
     }
 
     public void setHumidity (String newHumidity) {
         if (!newHumidity.equals(humidity) ) {
             humidity = newHumidity;
-            setChanged();
-            notifyObservers();
         }
     }
     public String getHumidity () {
@@ -59,10 +57,33 @@ public class CurrentCity extends Observable {
     }
 
     public void setWeather(String weather) {
-        if (!weather.equals(weather) ) {
-            this.weather = weather;
-            setChanged();
-            notifyObservers();
-        }
+        this.weather = weather;
+        commitChanges();
+
+    }
+
+    public String getWeather() {
+        return this.weather;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+        commitChanges();
+    }
+
+    public void setProperties(String weather, String temperature, String humidity) {
+        this.weather = weather;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        commitChanges();
+    }
+
+    public void commitChanges() {
+        setChanged();
+        notifyObservers();
+    }
+
+    public String getCountry() {
+        return country;
     }
 }

@@ -42,8 +42,10 @@ import static com.example.android.weatherapp.FirstLetterSelectionActivity.LETTER
 // Activity that displays the cities when we want to search
 public class ListOfCitiesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SortedListAdapter.Callback, Observer {
 
-    public static int PICK_CITY = 1;
-    public static String CITY_NAME_EXTRA = "CITY NAME";
+    public static final String CITY_ID_EXTRA = "CITY ID" ;
+    public static final int PICK_CITY = 1;
+    public static final String CITY_NAME_EXTRA = "CITY NAME";
+    public static final String CITY_COUNTRY_EXTRA = "CITY COUNTRY EXTRA";
 
     private CitiesAdapter mAdapter;
     private ActivityListOfCitiesBinding mBinding;
@@ -72,6 +74,10 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
             //TODO: On Click Logic
                 Intent data = new Intent();
                 data.putExtra(CITY_NAME_EXTRA,model.getName());
+                data.putExtra(CITY_ID_EXTRA, model.getId());
+                data.putExtra(CITY_COUNTRY_EXTRA, model.getCountry());
+
+                Cities.getInstance().setCities(null);
                 activity.setResult(RESULT_OK, data);
                 activity.finish();
             }
