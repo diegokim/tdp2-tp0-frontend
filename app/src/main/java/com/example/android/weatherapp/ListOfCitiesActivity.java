@@ -90,6 +90,7 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
         mBinding.editProgressBar.setVisibility(View.VISIBLE);
         Intent intent = getIntent();
         String letter = intent.getStringExtra(LETTER_EXTRA);
+        String serverAddr = intent.getStringExtra(IpAndPortSelectionActivity.SERVER_ADDR_EXTRA);
 
         Log.i("LETTER", letter);
 
@@ -100,7 +101,7 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
             // Send request to the server asking for the cities
             JSONObject params = new JSONObject();
             params.put("keyWord",letter.toLowerCase());
-            CitiesRequest citiesRequest = new CitiesRequest(params);
+            CitiesRequest citiesRequest = new CitiesRequest(serverAddr, params);
             WeatherRequestQueue.getInstance(this).addToRequestQueue(citiesRequest);
 
             mAdapter.edit()

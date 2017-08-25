@@ -5,7 +5,12 @@ import java.util.Observable;
 
 public class CurrentCity extends Observable {
 
+    private static final String DEFAULT_NAME = "Nueva York";
+    private static final String DEFAULT_ID = "5128638" ;
+    private static final String DEFAULT_COUNTRY = "US" ;
+    private static final String NO_DEFAULT_DATA = "S/D";
     private static CurrentCity mInstance;
+    private String id;
     private String name;
     private String humidity;
     private String temperature;
@@ -13,11 +18,12 @@ public class CurrentCity extends Observable {
     private String country;
 
     private CurrentCity (){
-        this.name = "Nueva York";
-        this.country = "US";
-        this.humidity = "S/D";
-        this.temperature = "S/D";
-        this.weather = "S/D";
+        this.name = DEFAULT_NAME;
+        this.id = DEFAULT_ID;
+        this.country = DEFAULT_COUNTRY;
+        this.humidity = NO_DEFAULT_DATA;
+        this.temperature = NO_DEFAULT_DATA;
+        this.weather = NO_DEFAULT_DATA;
     }
 
     public static CurrentCity getInstance() {

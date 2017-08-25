@@ -32,6 +32,8 @@ public class FirstLetterSelectionActivity extends AppCompatActivity {
     public void selectLetter(View view) {
         Intent intent = new Intent(this, ListOfCitiesActivity.class);
         intent.putExtra(LETTER_EXTRA, ((TextView)view).getText());
+        String serverAddr = getIntent().getStringExtra(IpAndPortSelectionActivity.SERVER_ADDR_EXTRA);
+        intent.putExtra(IpAndPortSelectionActivity.SERVER_ADDR_EXTRA, serverAddr);
         startActivityForResult(intent, ListOfCitiesActivity.PICK_CITY);
     }
 
