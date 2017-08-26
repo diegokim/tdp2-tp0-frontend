@@ -120,6 +120,10 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         boolean cloudy = (weather.equals("fog") || weather.equals("clouds") || weather.equals("mist"));
         boolean rainy = (weather.equals("rain") || weather.equals("drizzle"));
 
+        Log.d("weather-time: ",time);
+        Log.d("weather-desc: ",weather);
+        Log.d("weather-temp: ", temperature);
+
         if (day && sunny && temperature_hot) layout.setBackgroundResource(R.drawable.beach_sun_day);
         if (day && sunny && temperature_normal) layout.setBackgroundResource(R.drawable.city_sun_day);
         if (day && sunny && temperature_cold) layout.setBackgroundResource(R.drawable.mountains_sun_day);
