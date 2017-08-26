@@ -20,7 +20,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 
-public class MainActivity extends AppCompatActivity implements Observer {
+public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
     private static final String TEMPERATURE_UNIT = " °C";
     private static final String HUMIDITY_UNIT = " Hpa";
@@ -31,10 +31,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private ProgressBar spinner;
     //TODO: Default api call?
     private static final String DEFAULT_ID = "5128638";
+    private String serverAddr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeServerAddres();
         setContentView(R.layout.activity_main);
 
         spinner = (ProgressBar) findViewById(R.id.main_progress_bar);
@@ -52,12 +54,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
         CurrentCity.getInstance().addObserver(this);
         // TODO: get the city from local storage
         activateSpinner();
-        WeatherRequest weatherRequest = new WeatherRequest(DEFAULT_ID);
+        WeatherRequest weatherRequest = new WeatherRequest(serverAddr, DEFAULT_ID);
         WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
+    }
+
+    private void initializeServerAddres() {
+        Intent data = getIntent();
+        serverAddr = data.getStringExtra(IpAndPortSelectionActivity.SERVER_ADDR_EXTRA);
     }
 
     public void selectCity(View view) {
         Intent intent = new Intent(this, FirstLetterSelectionActivity.class);
+        intent.putExtra(IpAndPortSelectionActivity.SERVER_ADDR_EXTRA, serverAddr);
         startActivityForResult(intent, ListOfCitiesActivity.PICK_CITY);
     }
 
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 CurrentCity.getInstance().setName(name);
                 CurrentCity.getInstance().setCountry(country);
                 activateSpinner();
-                WeatherRequest weatherRequest = new WeatherRequest(Integer.toString(id));
+                WeatherRequest weatherRequest = new WeatherRequest(serverAddr, Integer.toString(id));
                 WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
             }
         }
