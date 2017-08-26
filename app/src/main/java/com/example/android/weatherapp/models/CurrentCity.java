@@ -8,7 +8,7 @@ public class CurrentCity extends Observable {
     private static final String DEFAULT_NAME = "Nueva York";
     private static final String DEFAULT_ID = "5128638" ;
     private static final String DEFAULT_COUNTRY = "US" ;
-    private static final String NO_DEFAULT_DATA = "S/D";
+    public static final String NO_DEFAULT_DATA = "S/D";
     private static CurrentCity mInstance;
     private String id;
     private String name;
@@ -16,6 +16,7 @@ public class CurrentCity extends Observable {
     private String temperature;
     private String weather;
     private String country;
+    private String time;
 
     private CurrentCity (){
         this.name = DEFAULT_NAME;
@@ -24,6 +25,7 @@ public class CurrentCity extends Observable {
         this.humidity = NO_DEFAULT_DATA;
         this.temperature = NO_DEFAULT_DATA;
         this.weather = NO_DEFAULT_DATA;
+        this.time = NO_DEFAULT_DATA;
     }
 
     public static CurrentCity getInstance() {
@@ -77,10 +79,11 @@ public class CurrentCity extends Observable {
         commitChanges();
     }
 
-    public void setProperties(String weather, String temperature, String humidity) {
+    public void setProperties(String weather, String temperature, String humidity, String time) {
         this.weather = weather;
         this.temperature = temperature;
         this.humidity = humidity;
+        this.time = time;
         commitChanges();
     }
 
@@ -91,5 +94,9 @@ public class CurrentCity extends Observable {
 
     public String getCountry() {
         return country;
+    }
+
+    public String getTime() {
+        return time;
     }
 }
