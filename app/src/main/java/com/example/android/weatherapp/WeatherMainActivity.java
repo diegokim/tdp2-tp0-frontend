@@ -1,6 +1,7 @@
 package com.example.android.weatherapp;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.android.weatherapp.models.CurrentCity;
 import com.example.android.weatherapp.request.weather.WeatherRequest;
-import com.example.android.weatherapp.request.WeatherRequestQueue;
+import com.example.android.weatherapp.request.NetworkRequestQueue;
 
 
 import java.util.Observable;
@@ -54,8 +55,8 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         CurrentCity.getInstance().addObserver(this);
         // TODO: get the city from local storage
         activateSpinner();
-        WeatherRequest weatherRequest = new WeatherRequest(serverAddr, DEFAULT_ID);
-        WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
+        WeatherRequest weatherRequest = new WeatherRequest(serverAddr, DEFAULT_ID, this);
+        NetworkRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
     }
 
     private void initializeServerAddres() {
@@ -83,8 +84,8 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
                 CurrentCity.getInstance().setName(name);
                 CurrentCity.getInstance().setCountry(country);
                 activateSpinner();
-                WeatherRequest weatherRequest = new WeatherRequest(serverAddr, Integer.toString(id));
-                WeatherRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
+                WeatherRequest weatherRequest = new WeatherRequest(serverAddr, Integer.toString(id), this);
+                NetworkRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
             }
         }
     }
@@ -101,6 +102,15 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         humidity.setVisibility(View.VISIBLE);
     }
 
+    private void changeBackground(String temperature, String humidity, String weather, String time) {
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.main_activity_layout);
+        int temp = Integer.parseInt(temperature );
+        int timeInt = Integer.parseInt(time);
+        // TODO: image background changes with:
+        // layout.setBackgroundResource(R.drawable.{image-name});
+        // the image must be placed in res/drawable
+    }
+
     @Override
     public void update(Observable observable, Object o) {
         // Update the view when the currenct city change some of its atributes.
@@ -109,11 +119,18 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         String humidity = CurrentCity.getInstance().getHumidity();
         String temperature = CurrentCity.getInstance().getTemperature();
         String weather = CurrentCity.getInstance().getWeather();
+        String time = CurrentCity.getInstance().getTime();
+
+        if (temperature != CurrentCity.NO_DEFAULT_DATA)
+            changeBackground(temperature,humidity,weather,time);
 
         // Update the TextViews
         currentName.setText(name + CITY_NAME_COUNTRY_SEPARATOR + country);
         this.temperature.setText(temperature + TEMPERATURE_UNIT);
         this.humidity.setText(humidity + HUMIDITY_UNIT);
+
         deactivateSpinner();
     }
+
+
 }

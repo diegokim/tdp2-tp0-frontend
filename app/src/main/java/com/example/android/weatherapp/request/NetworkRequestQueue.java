@@ -7,12 +7,12 @@ import com.android.volley.toolbox.Volley;
 
 
 /* Singleton to access the request queue */
-public class WeatherRequestQueue {
-    private static WeatherRequestQueue instance;
+public class NetworkRequestQueue {
+    private static NetworkRequestQueue instance;
     private RequestQueue requestQueue;
     private static Context context;
 
-    private WeatherRequestQueue(Context context) {
+    private NetworkRequestQueue(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
     }
@@ -24,9 +24,9 @@ public class WeatherRequestQueue {
         return requestQueue;
     }
 
-    public static synchronized WeatherRequestQueue getInstance(Context context) {
+    public static synchronized NetworkRequestQueue getInstance(Context context) {
         if ( instance == null ) {
-            instance = new WeatherRequestQueue(context);
+            instance = new NetworkRequestQueue(context);
         }
         return instance;
     }

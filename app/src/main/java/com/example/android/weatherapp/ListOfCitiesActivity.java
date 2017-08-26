@@ -18,14 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ProgressBar;
 
 
 import com.example.android.weatherapp.cities.CitiesAdapter;
 import com.example.android.weatherapp.databinding.ActivityListOfCitiesBinding;
 import com.example.android.weatherapp.models.Cities;
 import com.example.android.weatherapp.models.City;
-import com.example.android.weatherapp.request.WeatherRequestQueue;
+import com.example.android.weatherapp.request.NetworkRequestQueue;
 import com.example.android.weatherapp.request.cities.CitiesRequest;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 
@@ -101,8 +100,8 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
             // Send request to the server asking for the cities
             JSONObject params = new JSONObject();
             params.put("keyWord",letter.toLowerCase());
-            CitiesRequest citiesRequest = new CitiesRequest(serverAddr, params);
-            WeatherRequestQueue.getInstance(this).addToRequestQueue(citiesRequest);
+            CitiesRequest citiesRequest = new CitiesRequest(serverAddr, params, this);
+            NetworkRequestQueue.getInstance(this).addToRequestQueue(citiesRequest);
 
             mAdapter.edit()
                     .replaceAll(Cities.getInstance().getCities())
