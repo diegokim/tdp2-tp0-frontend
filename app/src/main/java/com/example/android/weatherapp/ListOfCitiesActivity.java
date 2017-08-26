@@ -40,6 +40,7 @@ import static com.example.android.weatherapp.FirstLetterSelectionActivity.LETTER
 
 
 // Activity that displays the cities when we want to search
+
 public class ListOfCitiesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SortedListAdapter.Callback, Observer {
 
     public static final String CITY_ID_EXTRA = "CITY ID" ;
