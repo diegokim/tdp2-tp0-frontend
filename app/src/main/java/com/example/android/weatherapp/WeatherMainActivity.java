@@ -111,9 +111,32 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.main_activity_layout);
         int temp = Integer.parseInt(temperature );
         int timeInt = Integer.parseInt(time);
-        // TODO: image background changes with:
-        // layout.setBackgroundResource(R.drawable.{image-name});
-        // the image must be placed in res/drawable
+
+        boolean temperature_hot = (temp > 20);
+        boolean temperature_cold = (temp < 8);
+        boolean temperature_normal = ((!temperature_hot) && (!temperature_cold));
+        boolean day = (timeInt >= 9 && timeInt <= 18);
+        boolean sunny = (weather.equals("clear") || weather.equals("sun"));
+        boolean cloudy = (weather.equals("fog") || weather.equals("clouds") || weather.equals("mist"));
+        boolean rainy = (weather.equals("rain") || weather.equals("drizzle"));
+
+        Log.d("weather-time: ",time);
+        Log.d("weather-desc: ",weather);
+        Log.d("weather-temp: ", temperature);
+
+        if (day && sunny && temperature_hot) layout.setBackgroundResource(R.drawable.beach_sun_day);
+        if (day && sunny && temperature_normal) layout.setBackgroundResource(R.drawable.city_sun_day);
+        if (day && sunny && temperature_cold) layout.setBackgroundResource(R.drawable.mountains_sun_day);
+        if (day && cloudy && temperature_hot) layout.setBackgroundResource(R.drawable.jungle_cloud_day);
+        if (day && cloudy && temperature_normal) layout.setBackgroundResource(R.drawable.city_cloud_day);
+        if (day && cloudy && temperature_cold) layout.setBackgroundResource(R.drawable.bridge_cloud_day);
+        if (day && rainy && temperature_hot) layout.setBackgroundResource(R.drawable.tropical_rain_day_3);
+        if (day && rainy && temperature_normal) layout.setBackgroundResource(R.drawable.city_rain_day);
+        if (day && rainy && temperature_cold) layout.setBackgroundResource(R.drawable.couple);
+        if (!day && rainy) layout.setBackgroundResource(R.drawable.rain_window);
+        if (!day && !rainy) layout.setBackgroundResource(R.drawable.stars);
+
+        System.gc();
     }
 
     @Override
