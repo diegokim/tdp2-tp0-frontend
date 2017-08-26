@@ -36,38 +36,28 @@ public class CurrentCity extends Observable {
     }
 
     public void setName (String newName) {
-        if (!newName.equals(name)) {
             name = newName;
-            commitChanges();
-        }
     }
     public void setTemperature (String newTemperature) {
-        if (!newTemperature.equals(temperature)) {
-            temperature = newTemperature;
-            commitChanges();
-        }
+        temperature = newTemperature;
     }
 
     public void setHumidity (String newHumidity) {
-        if (!newHumidity.equals(humidity) ) {
             humidity = newHumidity;
-        }
     }
     public String getHumidity () {
         return humidity;
-
     }
     public String getName () {
         return name;
     }
+
     public String getTemperature () {
         return temperature;
     }
 
     public void setWeather(String weather) {
         this.weather = weather;
-        commitChanges();
-
     }
 
     public String getWeather() {
@@ -76,15 +66,6 @@ public class CurrentCity extends Observable {
 
     public void setCountry(String country) {
         this.country = country;
-        commitChanges();
-    }
-
-    public void setProperties(String weather, String temperature, String humidity, String time) {
-        this.weather = weather;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.time = time;
-        commitChanges();
     }
 
     public void commitChanges() {
@@ -98,5 +79,15 @@ public class CurrentCity extends Observable {
 
     public String getTime() {
         return time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setTime(String time) { this.time = time; }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
