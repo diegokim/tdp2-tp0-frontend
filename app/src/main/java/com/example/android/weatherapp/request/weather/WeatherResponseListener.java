@@ -13,7 +13,11 @@ public class WeatherResponseListener implements Response.Listener<JSONObject> {
             String humidity = response.getString("humidity");
             String weather = response.getString("weather");
             String time = response.getString("time");
-            CurrentCity.getInstance().setProperties(weather,temperature,humidity,time);
+            CurrentCity.getInstance().setTemperature(temperature);
+            CurrentCity.getInstance().setHumidity(humidity);
+            CurrentCity.getInstance().setTime(time);
+            CurrentCity.getInstance().setWeather(weather);
+            CurrentCity.getInstance().commitChanges();
         } catch (JSONException exception) {
             // TODO: toast message
         }

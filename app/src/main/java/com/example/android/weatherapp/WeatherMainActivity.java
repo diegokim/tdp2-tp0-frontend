@@ -54,8 +54,13 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
         CurrentCity.getInstance().addObserver(this);
         // TODO: get the city from local storage
+        fetchWeather();
+    }
+
+    private void fetchWeather() {
         activateSpinner();
-        WeatherRequest weatherRequest = new WeatherRequest(serverAddr, DEFAULT_ID, this);
+        String id = CurrentCity.getInstance().getId();
+        WeatherRequest weatherRequest = new WeatherRequest(serverAddr, id, this);
         NetworkRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
     }
 
@@ -83,9 +88,9 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
                 CurrentCity.getInstance().setName(name);
                 CurrentCity.getInstance().setCountry(country);
-                activateSpinner();
-                WeatherRequest weatherRequest = new WeatherRequest(serverAddr, Integer.toString(id), this);
-                NetworkRequestQueue.getInstance(this).addToRequestQueue(weatherRequest);
+                CurrentCity.getInstance().setId(Integer.toString(id));
+
+                fetchWeather();
             }
         }
     }
@@ -132,5 +137,8 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         deactivateSpinner();
     }
 
+    protected void refreshData(View view) {
+        fetchWeather();
+    }
 
 }
