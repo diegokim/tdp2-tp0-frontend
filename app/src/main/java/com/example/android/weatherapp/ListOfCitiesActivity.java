@@ -103,7 +103,6 @@ public class ListOfCitiesActivity extends AppCompatActivity implements SearchVie
             params.put("keyWord",letter.toLowerCase());
             CitiesRequest citiesRequest = new CitiesRequest(serverAddr, params, this);
             NetworkRequestQueue.getInstance(this).addToRequestQueue(citiesRequest);
-
             mAdapter.edit()
                     .replaceAll(Cities.getInstance().getCities())
                     .commit();

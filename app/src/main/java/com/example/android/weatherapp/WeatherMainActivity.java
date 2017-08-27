@@ -24,11 +24,11 @@ import java.util.Observer;
 public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
     private static final String TEMPERATURE_UNIT = " °C";
-    private static final String HUMIDITY_UNIT = " Hpa";
+    private static final String PRESSURE_UNIT = " Hpa";
     private static final String CITY_NAME_COUNTRY_SEPARATOR = ", ";
     private TextView currentName;
     private TextView temperature;
-    private TextView humidity;
+    private TextView pressure;
     private ProgressBar spinner;
     //TODO: Default api call?
     private static final String DEFAULT_ID = "5128638";
@@ -50,7 +50,7 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
         currentName = (TextView) findViewById(R.id.current_city);
         temperature = (TextView) findViewById(R.id.temperature);
-        humidity = (TextView) findViewById(R.id.humidity);
+        pressure = (TextView) findViewById(R.id.humidity);
 
         CurrentCity.getInstance().addObserver(this);
         // TODO: get the city from local storage
@@ -97,14 +97,14 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
     protected void activateSpinner() {
         temperature.setVisibility(View.GONE);
-        humidity.setVisibility(View.GONE);
+        pressure.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
     }
 
     protected void deactivateSpinner() {
         spinner.setVisibility(View.GONE);
         temperature.setVisibility(View.VISIBLE);
-        humidity.setVisibility(View.VISIBLE);
+        pressure.setVisibility(View.VISIBLE);
     }
 
     private void changeBackground(String temperature, String humidity, String weather, String time) {
@@ -121,18 +121,18 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         // Update the view when the currenct city change some of its atributes.
         String name = CurrentCity.getInstance().getName();
         String country = CurrentCity.getInstance().getCountry();
-        String humidity = CurrentCity.getInstance().getHumidity();
+        String pressure = CurrentCity.getInstance().getHumidity(); // TODO: change to pressure
         String temperature = CurrentCity.getInstance().getTemperature();
         String weather = CurrentCity.getInstance().getWeather();
         String time = CurrentCity.getInstance().getTime();
 
         if (temperature != CurrentCity.NO_DEFAULT_DATA)
-            changeBackground(temperature,humidity,weather,time);
+            changeBackground(temperature,pressure,weather,time);
 
         // Update the TextViews
         currentName.setText(name + CITY_NAME_COUNTRY_SEPARATOR + country);
         this.temperature.setText(temperature + TEMPERATURE_UNIT);
-        this.humidity.setText(humidity + HUMIDITY_UNIT);
+        this.pressure.setText(pressure + PRESSURE_UNIT);
 
         deactivateSpinner();
     }
