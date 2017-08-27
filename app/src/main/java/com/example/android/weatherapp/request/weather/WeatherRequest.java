@@ -11,7 +11,7 @@ import static com.example.android.weatherapp.request.RequestConfig.WEATHER_METHO
 public class WeatherRequest extends JsonObjectRequest{
 
     public WeatherRequest(String serverAddr, String cityId, Context context) {
-        super(WEATHER_METHOD, serverAddr + WEATHER_ENDPOINT + cityId, null, new WeatherResponseListener(), new WeatherErrorListener(context));
+        super(WEATHER_METHOD, serverAddr + WEATHER_ENDPOINT + cityId, null, new WeatherResponseListener(context), new WeatherErrorListener(context));
     }
 
 }

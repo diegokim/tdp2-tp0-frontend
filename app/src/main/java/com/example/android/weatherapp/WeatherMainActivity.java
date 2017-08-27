@@ -144,7 +144,7 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         // Update the view when the currenct city change some of its atributes.
         String name = CurrentCity.getInstance().getName();
         String country = CurrentCity.getInstance().getCountry();
-        String pressure = CurrentCity.getInstance().getHumidity(); // TODO: change to pressure
+        String pressure = CurrentCity.getInstance().getPressure(); // TODO: change to pressure
         String temperature = CurrentCity.getInstance().getTemperature();
         String weather = CurrentCity.getInstance().getWeather();
         String time = CurrentCity.getInstance().getTime();

@@ -12,7 +12,7 @@ public class CurrentCity extends Observable {
     private static CurrentCity mInstance;
     private String id;
     private String name;
-    private String humidity;
+    private String pressure;
     private String temperature;
     private String weather;
     private String country;
@@ -22,7 +22,7 @@ public class CurrentCity extends Observable {
         this.name = DEFAULT_NAME;
         this.id = DEFAULT_ID;
         this.country = DEFAULT_COUNTRY;
-        this.humidity = NO_DEFAULT_DATA;
+        this.pressure = NO_DEFAULT_DATA;
         this.temperature = NO_DEFAULT_DATA;
         this.weather = NO_DEFAULT_DATA;
         this.time = NO_DEFAULT_DATA;
@@ -42,11 +42,11 @@ public class CurrentCity extends Observable {
         temperature = newTemperature;
     }
 
-    public void setHumidity (String newHumidity) {
-            humidity = newHumidity;
+    public void setPressure(String newHumidity) {
+            pressure = newHumidity;
     }
-    public String getHumidity () {
-        return humidity;
+    public String getPressure() {
+        return pressure;
     }
     public String getName () {
         return name;
