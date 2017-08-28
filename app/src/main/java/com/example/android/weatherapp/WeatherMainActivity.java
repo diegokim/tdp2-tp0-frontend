@@ -1,6 +1,8 @@
 package com.example.android.weatherapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,13 +29,17 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
     private static final String TEMPERATURE_UNIT = " °C";
     private static final String PRESSURE_UNIT = " Hpa";
     private static final String CITY_NAME_COUNTRY_SEPARATOR = ", ";
+
+    private static final String CITY_ID_ADDR = "com.example.android.weatherapp.CITY_ID";
+    private static final String CITY_COUNTRY_ADDR = "com.example.android.weatherapp.CITY_COUNTRY";
+    private static final String CITY_NAME_ADDR = "com.example.android.weatherapp.CITY_NAME";
+
     private TextView currentName;
     private TextView temperature;
     private TextView pressure;
     private ProgressBar spinner;
-    //TODO: Default api call?
-    private static final String DEFAULT_ID = "5128638";
     private String serverAddr;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +49,31 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
 
         spinner = (ProgressBar) findViewById(R.id.main_progress_bar);
 
-        // Set a custom toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-
-        // Set the text of the toolbar to be the current city
 
         currentName = (TextView) findViewById(R.id.current_city);
         temperature = (TextView) findViewById(R.id.temperature);
         pressure = (TextView) findViewById(R.id.humidity);
 
         CurrentCity.getInstance().addObserver(this);
-        // TODO: get the city from local storage
+        loadCityFromLocalStorage();
         fetchWeather();
+    }
+
+    private void loadCityFromLocalStorage() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String defaultId = CurrentCity.getInstance().getId();
+        String defaultName = CurrentCity.getInstance().getName();
+        String defaultCountry = CurrentCity.getInstance().getCountry();
+
+        String id = sharedPref.getString(CITY_ID_ADDR, defaultId);
+        String name = sharedPref.getString(CITY_NAME_ADDR, defaultName);
+        String country = sharedPref.getString(CITY_COUNTRY_ADDR, defaultCountry);
+
+        CurrentCity.getInstance().setId(id);
+        CurrentCity.getInstance().setName(name);
+        CurrentCity.getInstance().setCountry(country);
     }
 
     private void fetchWeather() {
@@ -84,7 +103,6 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
                 String name = data.getStringExtra(ListOfCitiesActivity.CITY_NAME_EXTRA);
                 int id = data.getIntExtra(ListOfCitiesActivity.CITY_ID_EXTRA, -1);
                 String country = data.getStringExtra(ListOfCitiesActivity.CITY_COUNTRY_EXTRA);
-                Log.i("INFO ID OF CITY", Integer.toString(id));
 
                 CurrentCity.getInstance().setName(name);
                 CurrentCity.getInstance().setCountry(country);
@@ -156,7 +174,6 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         currentName.setText(name + CITY_NAME_COUNTRY_SEPARATOR + country);
         this.temperature.setText(temperature + TEMPERATURE_UNIT);
         this.pressure.setText(pressure + PRESSURE_UNIT);
-
         deactivateSpinner();
     }
 
@@ -164,4 +181,19 @@ public class WeatherMainActivity extends AppCompatActivity implements Observer {
         fetchWeather();
     }
 
+
+    private void saveCityOnLocalStorage() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(CITY_ID_ADDR, CurrentCity.getInstance().getId());
+        editor.putString(CITY_NAME_ADDR, CurrentCity.getInstance().getName());
+        editor.putString(CITY_COUNTRY_ADDR, CurrentCity.getInstance().getCountry());
+        editor.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCityOnLocalStorage();
+    }
 }
