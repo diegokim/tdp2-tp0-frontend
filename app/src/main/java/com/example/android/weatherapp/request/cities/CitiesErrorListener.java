@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.android.weatherapp.models.Cities;
 import com.example.android.weatherapp.models.CurrentCity;
 
 /**
@@ -25,6 +26,7 @@ public class CitiesErrorListener implements Response.ErrorListener {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, NETWORK_ERROR_MESSAGE, duration);
         toast.show();
+        Cities.getInstance().commitChanges();
     }
 
 }

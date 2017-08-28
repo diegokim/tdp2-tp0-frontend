@@ -33,11 +33,14 @@ public class Cities extends Observable {
         } else {
             cities = new ArrayList<>();
         }
+        commitChanges();
+    }
+
+    public void commitChanges(){
         System.gc();
         setChanged();
         notifyObservers();
     }
-
 
 
 }
